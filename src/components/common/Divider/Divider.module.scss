@@ -1,0 +1,30 @@
+@layer components {
+	.divider {
+		.line {
+			display: block;
+			height: 100%;
+			background-color: inherit;
+		}
+	}
+
+	// direction
+	.horizontal {
+		width: 100%;
+	}
+
+	// color
+	.light {
+		background-color: var(--color-gray-200);
+	}
+	.dark {
+		background-color: var(--color-gray-400);
+	}
+
+	// variant {
+	.line {
+		height: 1px;
+	}
+	.depth {
+		height: 8px;
+	}
+}

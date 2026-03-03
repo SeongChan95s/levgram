@@ -1,0 +1,265 @@
+// variables는 전역으로 자동 import됨
+
+/* ======
+
+  mixins
+
+====== */
+
+/* ------
+
+  media query
+
+------ */
+
+@mixin tablet {
+	/* tablet device : 768px ~ */
+	@media (width >=768px) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	/* desktop device : 1025px ~ */
+	@media (width >=1025px) {
+		@content;
+	}
+}
+
+/* ------
+
+  typography
+
+------ */
+
+// headline
+@mixin headline-1 {
+	font-size: var(--text-headline-1);
+	font-weight: var(--text-headline-1--font-weight);
+	line-height: var(--text-headline-1--line-height);
+}
+
+@mixin headline-2 {
+	font-size: var(--text-headline-2);
+	font-weight: var(--text-headline-2--font-weight);
+	line-height: var(--text-headline-2--line-height);
+}
+
+@mixin headline-3 {
+	font-size: var(--text-headline-3);
+	font-weight: var(--text-headline-3--font-weight);
+	line-height: var(--text-headline-3--line-height);
+}
+
+// title
+@mixin title-1 {
+	font-size: var(--text-title-1);
+	font-weight: var(--text-title-1--font-weight);
+	line-height: var(--text-title-1--line-height);
+}
+
+@mixin title-2 {
+	font-size: var(--text-title-2);
+	font-weight: var(--text-title-2--font-weight);
+	line-height: var(--text-title-2--line-height);
+}
+
+@mixin title-3 {
+	font-size: var(--text-title-3);
+	font-weight: var(--text-title-3--font-weight);
+	line-height: var(--text-title-3--line-height);
+}
+
+@mixin title-4 {
+	font-size: var(--text-title-4);
+	font-weight: var(--text-title-4--font-weight);
+	line-height: var(--text-title-4--line-height);
+}
+
+// body
+@mixin body-1 {
+	font-size: var(--text-body-1);
+	font-weight: var(--text-body-1--font-weight);
+	line-height: var(--text-body-1--line-height);
+}
+
+@mixin body-2 {
+	font-size: var(--text-body-2);
+	font-weight: var(--text-body-2--font-weight);
+	line-height: var(--text-body-2--line-height);
+}
+
+@mixin body-3 {
+	font-size: var(--text-body-3);
+	font-weight: var(--text-body-3--font-weight);
+	line-height: var(--text-body-3--line-height);
+}
+
+@mixin body-4 {
+	font-size: var(--text-body-4);
+	font-weight: var(--text-body-4--font-weight);
+	line-height: var(--text-body-4--line-height);
+}
+
+// label
+@mixin label-1 {
+	font-size: var(--text-label-1);
+	font-weight: var(--text-label-1--font-weight);
+	line-height: var(--text-label-1--line-height);
+}
+
+@mixin label-2 {
+	font-size: var(--text-label-2);
+	font-weight: var(--text-label-2--font-weight);
+	line-height: var(--text-label-2--line-height);
+}
+
+@mixin label-3 {
+	font-size: var(--text-label-3);
+	font-weight: var(--text-label-3--font-weight);
+	line-height: var(--text-label-3--line-height);
+}
+
+@mixin label-4 {
+	font-size: var(--text-label-4);
+	font-weight: var(--text-label-4--font-weight);
+	line-height: var(--text-label-4--line-height);
+}
+
+@mixin hidden {
+	position: absolute;
+	overflow: hidden;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	clip: rect(0, 0, 0, 0);
+}
+
+@mixin text-wrap($value) {
+	@if $value == 'nowrap' {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	} @else {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		white-space: unset;
+		-webkit-line-clamp: $value;
+	}
+}
+
+/* ------
+
+  material
+
+------ */
+
+@mixin white-glass-normal {
+	background-color: rgba(211, 211, 211, 0.7);
+	backdrop-filter: blur(40px) saturate(2);
+}
+
+@mixin gray-glass-normal {
+	background-color: rgba(150, 150, 150, 0.7);
+	backdrop-filter: blur(40px) saturate(2);
+}
+
+@mixin black-glass-normal {
+	background-color: rgba(32, 32, 32, 0.8);
+	backdrop-filter: blur(40px) saturate(2);
+}
+
+@mixin glass-container-light-lg() {
+	-webkit-backdrop-filter: blur(60px);
+	backdrop-filter: blur(60px);
+	background: rgb(224 224 255 / 40%);
+}
+
+@mixin glass-container-light-md() {
+	background: var(
+		rgb(37 37 37 / 82%),
+		linear-gradient(0deg, #8c8c8c 0%, #8c8c8c 100%),
+		rgb(37 37 37 / 82%)
+	);
+	background-blend-mode: overlay, normal;
+	-webkit-backdrop-filter: blur(40px);
+	backdrop-filter: blur(40px);
+}
+
+@mixin glass-container-normal-lg() {
+	background: rgb(88 84 97 / 25%);
+	-webkit-backdrop-filter: blur(100px);
+	backdrop-filter: blur(100px);
+}
+
+/* ------
+
+  layout
+
+------ */
+
+@mixin layout-width {
+	min-width: var(--layout-min-width);
+	max-width: var(--layout-max-width);
+	margin: 0 auto;
+}
+
+@mixin bg-full {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+@mixin bg-100 {
+	background-size: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+@mixin overlay {
+	pointer-events: painted;
+	&[class*='enter'] {
+		background: transparent;
+		&[class*='-active'],
+		&[class*='-done'] {
+			background-color: rgba(32, 32, 32, 0.6);
+			backdrop-filter: blur(10px) saturate(2);
+			transition: background 0.4s ease, backdrop-filter 0.4s ease;
+		}
+	}
+	&[class*='exit'] {
+		background-color: rgba(32, 32, 32, 0.6);
+		backdrop-filter: blur(10px) saturate(2);
+		&[class*='-active'],
+		&[class*='-done'] {
+			background: transparent;
+			backdrop-filter: blur(0px) saturate(1);
+			transition: background 0.4s ease, backdrop-filter 0.4s ease;
+		}
+	}
+}
+
+// styling
+@mixin divider($size: 'md') {
+	&:not(:first-child) {
+		border-top: 1px solid var(--color-gray-200);
+	}
+
+	@if ($size == 'md') {
+		padding-top: 1.2rem;
+		padding-bottom: 1.2rem;
+	}
+	@if ($size == 'lg') {
+		padding-top: 1.6rem;
+		padding-bottom: 1.6rem;
+	}
+}
+
+@mixin dot-divider($margin: 0.3rem) {
+	&:not(:last-child)::after {
+		content: '·';
+		margin: 0 $margin;
+	}
+}
