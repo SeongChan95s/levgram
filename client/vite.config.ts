@@ -51,8 +51,8 @@ export default defineConfig(({ mode }) => {
 					'robots.txt'
 				],
 				manifest: {
-					name: '파티 스케줄러',
-					short_name: '파티 스케줄러',
+					name: 'levgram',
+					short_name: 'levgram',
 					description: '바쁜 현대인을 위한 스마트한 약속 관리 솔루션',
 					theme_color: '#5A0FC8',
 					background_color: '#ffffff',

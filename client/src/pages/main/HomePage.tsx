@@ -2,11 +2,13 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 export default function HomePage() {
+	// const result = fetch('/api/');
+
 	return (
 		<>
 			<Helmet>
-				<title>파티 스케줄러</title>
-				<meta name="description" content="파티 일정을 쉽게 관리하세요" />
+				<title>levgram</title>
+				<meta name="description" content="설명" />
 			</Helmet>
 			<div className="home-page">
 				<main>

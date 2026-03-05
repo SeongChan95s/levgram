@@ -85,7 +85,7 @@ function useNavPath() {
 					);
 					const currentTitle = document.title;
 					if (result?.props?.title)
-						result.props.title = currentTitle.replace('모요 :', '');
+						result.props.title = currentTitle.replace('levgram :', '');
 
 					return result ? { ...result } : undefined;
 				});

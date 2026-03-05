@@ -7,7 +7,7 @@ export default function ErrorPage() {
 	return (
 		<>
 			<Helmet>
-				<title>에러 - 파티 스케줄러</title>
+				<title>에러 - levgram</title>
 				<meta name="description" content="페이지를 찾을 수 없습니다" />
 			</Helmet>
 			<div>
