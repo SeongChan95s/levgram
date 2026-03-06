@@ -1,20 +1,42 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/levgram';
+const uri = process.env.MONGODB_URI!;
+const options = {
+	connectTimeoutMS: 10000,
+	serverSelectionTimeoutMS: 10000
+};
 
-let client: MongoClient;
-let db: Db;
-
-export async function connectDB(): Promise<Db> {
-	if (db) return db;
-	client = new MongoClient(MONGODB_URI);
-	await client.connect();
-	db = client.db();
-	console.log('MongoDB 연결 성공');
-	return db;
+declare global {
+	var _mongo: Promise<MongoClient> | undefined;
 }
 
-export function getDB(): Db {
-	if (!db) throw new Error('DB가 초기화되지 않았습니다. connectDB()를 먼저 호출하세요.');
-	return db;
+const connectWithRetry = async (retries = 2, delay = 1000): Promise<MongoClient> => {
+	const client = new MongoClient(uri, options);
+
+	for (let i = 0; i <= retries; i++) {
+		try {
+			await client.connect();
+			await client.db().command({ ping: 1 });
+			return client;
+		} catch (err) {
+			console.error(`❌ MongoDB 연결 실패 (시도 ${i + 1}):`, err);
+			if (i === retries) throw err;
+			await new Promise(res => setTimeout(res, delay));
+		}
+	}
+
+	throw new Error('MongoDB 연결 시도 모두 실패');
+};
+
+let connectDB: Promise<MongoClient>;
+
+if (process.env.NODE_ENV === 'development') {
+	if (!global._mongo) {
+		global._mongo = connectWithRetry();
+	}
+	connectDB = global._mongo;
+} else {
+	connectDB = connectWithRetry();
 }
+
+export { connectDB };

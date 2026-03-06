@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import PostDetailModal from '../../components/portfolio/PostDetailModal';
 import IconGridRow2Col2 from '../../components/common/Icon/IconGridRow2Col2';
-import { usePosts, useSearchPosts } from '../../services/postsService';
+import { getPosts, searchPosts } from '../../services/post';
 import { useDebounce } from '../../hooks/useDebounce';
 import { POSTS } from '../../mocks/posts';
 import type { Post } from '../../types/photo';
@@ -22,8 +23,18 @@ export default function SearchPage() {
 
 	const debouncedQuery = useDebounce(query, 300);
 
-	const { data: allPosts = POSTS } = usePosts();
-	const { data: searchedPosts = [] } = useSearchPosts(debouncedQuery);
+	const { data: allPosts = POSTS } = useQuery<Post[]>({
+		queryKey: ['posts'],
+		queryFn: getPosts,
+		placeholderData: POSTS,
+		retry: false
+	});
+	const { data: searchedPosts = [] } = useQuery<Post[]>({
+		queryKey: ['posts', 'search', debouncedQuery],
+		queryFn: () => searchPosts(debouncedQuery),
+		enabled: debouncedQuery.trim().length > 0,
+		placeholderData: []
+	});
 
 	const posts = debouncedQuery.trim() ? searchedPosts : allPosts;
 
@@ -49,9 +60,7 @@ export default function SearchPage() {
 								key={n}
 								onClick={() => setCols(n)}
 								className={`w-28 h-28 flex items-center justify-center rounded text-label-3 font-semibold transition-colors ${
-									cols === n
-										? 'text-gray-900'
-										: 'text-gray-400'
+									cols === n ? 'text-gray-900' : 'text-gray-400'
 								}`}
 								aria-label={`${n}열 보기`}>
 								{n}

@@ -1,15 +1,21 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import PostDetailModal from '../../components/portfolio/PostDetailModal';
 import IconGridRow2Col2 from '../../components/common/Icon/IconGridRow2Col2';
-import { usePosts } from '../../services/postsService';
+import { getPosts } from '../../services/post';
 import { PHOTOGRAPHER } from '../../mocks/photographer';
 import { POSTS } from '../../mocks/posts';
 import type { Post } from '../../types/photo';
 
 export default function ProfilePage() {
 	const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-	const { data: posts = POSTS } = usePosts();
+	const { data: posts = POSTS } = useQuery<Post[]>({
+		queryKey: ['posts'],
+		queryFn: getPosts,
+		placeholderData: POSTS,
+		retry: false
+	});
 
 	return (
 		<>
@@ -45,13 +51,13 @@ export default function ProfilePage() {
 								<span className="text-headline-4 text-gray-900">
 									{PHOTOGRAPHER.followers}
 								</span>
-								<span className="text-label-3 text-gray-500">팔로워</span>
+								<span className="text-label-3 text-gray-500">방문자수</span>
 							</div>
 							<div className="flex flex-col items-center gap-2">
 								<span className="text-headline-4 text-gray-900">
 									{PHOTOGRAPHER.following}
 								</span>
-								<span className="text-label-3 text-gray-500">팔로잉</span>
+								<span className="text-label-3 text-gray-500">좋아요수</span>
 							</div>
 						</div>
 					</div>
@@ -59,7 +65,7 @@ export default function ProfilePage() {
 					<div className="flex flex-col gap-3">
 						<span className="text-label-1 text-gray-900">{PHOTOGRAPHER.name}</span>
 						<span className="text-label-3 text-gray-500">{PHOTOGRAPHER.role}</span>
-						<p className="text-body-3 text-gray-700 whitespace-pre-line">
+						<p className="mt-8 text-body-3 text-gray-700 whitespace-pre-line">
 							{PHOTOGRAPHER.bio}
 						</p>
 					</div>

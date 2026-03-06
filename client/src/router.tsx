@@ -1,4 +1,3 @@
-import FeedPage from './pages/main/FeedPage';
 import SearchPage from './pages/main/SearchPage';
 import MessagePage from './pages/main/MessagePage';
 import ProfilePage from './pages/main/ProfilePage';
@@ -13,6 +12,7 @@ import GlobalPopupGuidePage from './pages/guide/global/GlobalPopupGuidePage';
 import SheetGuidePage from './pages/guide/common/SheetGuidePage';
 import PostDetailPage from './pages/post/detail';
 import SubLayout from './layouts/SubLayout';
+import HomePage from './pages/main/HomePage';
 
 const router = createBrowserRouter([
 	{
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: '/',
-				element: <FeedPage />
+				element: <HomePage />
 			},
 			{
 				path: '/search',

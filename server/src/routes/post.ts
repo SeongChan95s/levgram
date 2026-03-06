@@ -1,24 +1,24 @@
 import { Router, Request, Response } from 'express';
-import { getDB } from '../db.js';
-import type { IPost } from '../models/Post.js';
+import type { Post } from '../models/Post.js';
+import { connectDB } from '../db.js';
 
 const router = Router();
 
-// GET / - 전체 게시글 (최신순)
 router.get('/', async (_req: Request, res: Response) => {
 	try {
-		const posts = await getDB()
-			.collection<IPost>('posts')
+		const db = (await connectDB).db(process.env.MONGODB_NAME);
+		const posts = await db
+			.collection<Post>('posts')
 			.find()
 			.sort({ createdAt: -1 })
 			.toArray();
+
 		res.json({ success: true, data: posts });
 	} catch (_err) {
 		res.status(500).json({ success: false, message: '서버 오류' });
 	}
 });
 
-// GET /search?q=&model=&tag=
 router.get('/search', async (req: Request, res: Response) => {
 	try {
 		const { q, model, tag } = req.query;
@@ -34,8 +34,10 @@ router.get('/search', async (req: Request, res: Response) => {
 			filter['tags'] = tag;
 		}
 
-		const posts = await getDB()
-			.collection<IPost>('posts')
+		const db = (await connectDB).db(process.env.MONGODB_NAME);
+
+		const posts = await db
+			.collection<Post>('posts')
 			.find(filter)
 			.sort({ createdAt: -1 })
 			.toArray();

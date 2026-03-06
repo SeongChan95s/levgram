@@ -1,13 +1,8 @@
 import type { ObjectId } from 'mongodb';
 
-export interface IPhoto {
-	src: string;
-	alt?: string;
-}
-
-export interface IPost {
+export interface Post {
 	_id?: ObjectId;
-	photos: IPhoto[];
+	photos: string[];
 	title: string;
 	model: string;
 	description?: string;

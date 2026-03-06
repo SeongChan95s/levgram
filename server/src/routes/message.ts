@@ -1,13 +1,14 @@
 import { Router, Request, Response } from 'express';
-import { getDB } from '../db.js';
 import type { IMessage, MessageSender } from '../models/Message.js';
+import { connectDB } from '../db.js';
 
 const router = Router();
 
 // GET / - 전체 메시지 (오래된 순)
 router.get('/', async (_req: Request, res: Response) => {
 	try {
-		const messages = await getDB()
+		const db = (await connectDB).db(process.env.MONGODB_NAME);
+		const messages = await db
 			.collection<IMessage>('messages')
 			.find()
 			.sort({ createdAt: 1 })
@@ -29,7 +30,10 @@ router.post('/', async (req: Request, res: Response) => {
 		}
 
 		const doc: IMessage = { content, sender, createdAt: new Date() };
-		const result = await getDB().collection<IMessage>('messages').insertOne(doc);
+
+		const db = (await connectDB).db(process.env.MONGODB_NAME);
+
+		const result = await db.collection<IMessage>('messages').insertOne(doc);
 		res.status(201).json({ success: true, data: { ...doc, _id: result.insertedId } });
 	} catch (_err) {
 		res.status(500).json({ success: false, message: '서버 오류' });
