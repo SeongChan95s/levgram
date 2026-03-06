@@ -8,9 +8,12 @@
 		"deploy": "gcloud run deploy levgram --source . --region asia-northeast3 --allow-unauthenticated"
 	},
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.1003.0",
 		"axios": "^1.13.2",
 		"cors": "^2.8.5",
-		"express": "^4.21.2"
+		"dotenv": "^17.3.1",
+		"express": "^4.21.2",
+		"mongodb": "^7.1.0"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.17",

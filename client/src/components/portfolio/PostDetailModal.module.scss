@@ -1,0 +1,31 @@
+@layer components {
+	.overlay {
+		&:global(.enter) {
+			opacity: 0;
+		}
+
+		&:global(.enter-active) {
+			opacity: 1;
+			transition: opacity 0.22s ease;
+		}
+
+		&:global(.enter-done) {
+			opacity: 1;
+		}
+
+		&:global(.exit) {
+			opacity: 1;
+		}
+
+		&:global(.exit-active) {
+			opacity: 0;
+			transition: opacity 0.22s ease;
+		}
+	}
+
+	.swiperFill {
+		:global(.my-swiper) {
+			height: 100%;
+		}
+	}
+}

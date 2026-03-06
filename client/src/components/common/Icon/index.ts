@@ -18,6 +18,8 @@ export { default as IconIncrease } from './IconIncrease';
 export { default as IconLight } from './IconLight';
 export { default as IconLightMode } from './IconLightMode';
 export { default as IconList } from './IconList';
+export { default as IconMessageFilled } from './IconMessageFilled';
+export { default as IconMessageOutlined } from './IconMessageOutlined';
 export { default as IconMoreVertical } from './IconMoreVertical';
 export { default as IconNotifyOutlined } from './IconNotifyOutlined';
 export { default as IconPersonFilled } from './IconPersonFilled';

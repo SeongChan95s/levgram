@@ -47,25 +47,19 @@ const pathMap: PathMap[] = [
 		exact: true
 	},
 	{
-		path: '/party',
-		props: { logo: true, notify: true }
+		path: '/search',
+		props: { title: '검색' },
+		exact: true
 	},
 	{
-		path: '/detail',
-		props: { title: true, back: true }
+		path: '/message',
+		props: { title: '메시지' },
+		exact: true
 	},
 	{
-		path: '/chat',
-		props: { logo: true, notify: true }
-	},
-	{
-		path: '/my',
-		props: { logo: true, notify: true }
-	},
-	{
-		path: '/auth',
-		props: { title: true, back: true },
-		exact: false
+		path: '/profile',
+		props: { logo: true, notify: true },
+		exact: true
 	}
 ];
 

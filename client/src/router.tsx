@@ -1,4 +1,7 @@
-import HomePage from './pages/main/HomePage';
+import FeedPage from './pages/main/FeedPage';
+import SearchPage from './pages/main/SearchPage';
+import MessagePage from './pages/main/MessagePage';
+import ProfilePage from './pages/main/ProfilePage';
 import AboutPage from './pages/main/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -17,7 +20,19 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: '/',
-				element: <HomePage />
+				element: <FeedPage />
+			},
+			{
+				path: '/search',
+				element: <SearchPage />
+			},
+			{
+				path: '/message',
+				element: <MessagePage />
+			},
+			{
+				path: '/profile',
+				element: <ProfilePage />
 			},
 			{
 				path: '/about',
