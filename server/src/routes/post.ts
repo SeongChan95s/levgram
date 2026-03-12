@@ -4,9 +4,9 @@ import { connectDB } from '../db.js';
 
 const router = Router();
 
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/getPosts', async (_req: Request, res: Response) => {
 	try {
-		const db = (await connectDB).db(process.env.MONGODB_NAME);
+		const db = (await connectDB()).db(process.env.MONGODB_NAME);
 		const posts = await db
 			.collection<Post>('posts')
 			.find()
@@ -34,7 +34,7 @@ router.get('/search', async (req: Request, res: Response) => {
 			filter['tags'] = tag;
 		}
 
-		const db = (await connectDB).db(process.env.MONGODB_NAME);
+		const db = (await connectDB()).db(process.env.MONGODB_NAME);
 
 		const posts = await db
 			.collection<Post>('posts')

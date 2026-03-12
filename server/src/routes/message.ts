@@ -7,7 +7,7 @@ const router = Router();
 // GET / - 전체 메시지 (오래된 순)
 router.get('/', async (_req: Request, res: Response) => {
 	try {
-		const db = (await connectDB).db(process.env.MONGODB_NAME);
+		const db = (await connectDB()).db(process.env.MONGODB_NAME);
 		const messages = await db
 			.collection<IMessage>('messages')
 			.find()
@@ -31,7 +31,7 @@ router.post('/', async (req: Request, res: Response) => {
 
 		const doc: IMessage = { content, sender, createdAt: new Date() };
 
-		const db = (await connectDB).db(process.env.MONGODB_NAME);
+		const db = (await connectDB()).db(process.env.MONGODB_NAME);
 
 		const result = await db.collection<IMessage>('messages').insertOne(doc);
 		res.status(201).json({ success: true, data: { ...doc, _id: result.insertedId } });

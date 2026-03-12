@@ -4,9 +4,9 @@ export default function AboutPage() {
 	return (
 		<>
 			<Helmet>
-				<title>levgram - About</title>
+				<title>About - Levgram</title>
 			</Helmet>
-			<div>내용 </div>
+			<main className="about-page">내용 </main>
 		</>
 	);
 }

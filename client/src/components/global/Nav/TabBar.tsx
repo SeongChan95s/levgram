@@ -56,8 +56,8 @@ export default function TabBar() {
 			}
 		},
 		{
-			label: '메세지',
-			href: '/message',
+			label: '연락',
+			href: '/contact',
 			icons: {
 				normal: <IconMessageOutlined size="fill" />,
 				activated: <IconMessageFilled size="fill" />

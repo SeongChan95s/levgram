@@ -1,6 +1,6 @@
 import type { Message, MessageSender } from '../types/message';
 
-const BASE_URL = import.meta.env.VITE_SERVER_URL ?? 'http://localhost:8080';
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
 interface ApiResponse<T> {
 	success: boolean;
@@ -14,7 +14,10 @@ export async function getMessages(): Promise<Message[]> {
 	return json.data;
 }
 
-export async function createMessage(body: { content: string; sender: MessageSender }): Promise<Message> {
+export async function createMessage(body: {
+	content: string;
+	sender: MessageSender;
+}): Promise<Message> {
 	const res = await fetch(`${BASE_URL}/api/messages`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },

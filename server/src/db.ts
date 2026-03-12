@@ -28,15 +28,9 @@ const connectWithRetry = async (retries = 2, delay = 1000): Promise<MongoClient>
 	throw new Error('MongoDB 연결 시도 모두 실패');
 };
 
-let connectDB: Promise<MongoClient>;
-
-if (process.env.NODE_ENV === 'development') {
+export const connectDB = (): Promise<MongoClient> => {
 	if (!global._mongo) {
 		global._mongo = connectWithRetry();
 	}
-	connectDB = global._mongo;
-} else {
-	connectDB = connectWithRetry();
-}
-
-export { connectDB };
+	return global._mongo;
+};

@@ -48,12 +48,12 @@ const pathMap: PathMap[] = [
 	},
 	{
 		path: '/search',
-		props: { title: '검색' },
+		props: { logo: true, title: 'Search' },
 		exact: true
 	},
 	{
-		path: '/message',
-		props: { title: '메시지' },
+		path: '/contact',
+		props: { logo: true, title: 'Contact' },
 		exact: true
 	},
 	{
@@ -77,10 +77,6 @@ function useNavPath() {
 					let result = pathMap.find(({ path, exact = false }) =>
 						exact ? pathname == path : pathname.startsWith(path)
 					);
-					const currentTitle = document.title;
-					if (result?.props?.title)
-						result.props.title = currentTitle.replace('levgram :', '');
-
 					return result ? { ...result } : undefined;
 				});
 			});

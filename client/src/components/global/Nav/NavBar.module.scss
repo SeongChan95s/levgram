@@ -45,6 +45,11 @@
 			overflow: hidden;
 
 			h2 {
+				position: absolute;
+				top: 50%;
+				left: 0;
+				right: 0;
+				transform: translateY(-50%);
 				width: fit-content;
 				margin: 0 auto;
 				font-size: 14px;
@@ -65,7 +70,6 @@
 
 		&:not(:has(+ .quick-menu)) .title-box {
 			text-align: center;
-			text-indent: -2.25rem;
 		}
 
 		@keyframes marquee {

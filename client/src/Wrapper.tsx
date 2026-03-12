@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { create } from 'zustand';
-import GlobalDialog from './components/global/Popup/GlobalDialog';
-import GlobalToast from './components/global/Popup/GlobalToast';
+import GlobalDialog from './components/global/popup/GlobalDialog';
+import GlobalToast from './components/global/popup/GlobalToast';
 
 interface useLayoutStore {
 	layoutWidth: number;

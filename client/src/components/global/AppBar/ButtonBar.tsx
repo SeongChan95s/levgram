@@ -1,5 +1,5 @@
-import { Button } from '@/components/common/Button';
 import { AppBar } from '../../common/AppBar';
+import { Button } from '../../common/Button';
 
 interface ButtonBarProps {
 	className?: string;

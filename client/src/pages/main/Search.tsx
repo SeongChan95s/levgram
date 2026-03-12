@@ -41,11 +41,11 @@ export default function SearchPage() {
 	return (
 		<>
 			<Helmet>
-				<title>검색 · levgram</title>
+				<title>Search - Levgram</title>
 			</Helmet>
-			<main className="pt-60 min-h-svh pb-16">
+			<main className="search-page">
 				{/* sticky 검색바 */}
-				<div className="sticky top-[var(--nav-bar-height)] z-10 bg-white border-b border-gray-100 px-(--inner) py-8 flex items-center gap-8">
+				<div className="sticky top-(--nav-bar-height) z-10 bg-white border-b border-gray-100 px-(--inner) py-8 flex items-center gap-8">
 					<input
 						type="search"
 						value={query}
@@ -54,7 +54,7 @@ export default function SearchPage() {
 						className="flex-1 bg-gray-100 rounded-lg px-12 py-6 text-body-3 text-gray-900 outline-none placeholder:text-gray-400"
 					/>
 					{/* 열 수 토글 */}
-					<div className="flex items-center gap-4 flex-shrink-0">
+					<div className="flex items-center gap-4 shrink-0">
 						{([1, 2, 3] as ColCount[]).map(n => (
 							<button
 								key={n}

@@ -20,10 +20,10 @@ export default function ProfilePage() {
 	return (
 		<>
 			<Helmet>
-				<title>levgram</title>
+				<title>Profile - Levgram</title>
 				<meta name="description" content="사진작가 포트폴리오" />
 			</Helmet>
-			<main className="pt-60 min-h-svh">
+			<main className="profile-page">
 				{/* 프로필 섹션 */}
 				<section className="px-(--inner) pt-20 pb-16 border-b border-gray-100">
 					{/* 아바타 + 통계 */}

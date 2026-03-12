@@ -1,6 +1,6 @@
 import type { Post } from '../types/photo';
 
-const BASE_URL = import.meta.env.VITE_SERVER_URL ?? 'http://localhost:8080';
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
 interface ApiResponse<T> {
 	success: boolean;
@@ -8,7 +8,7 @@ interface ApiResponse<T> {
 }
 
 export async function getPosts(): Promise<Post[]> {
-	const res = await fetch(`${BASE_URL}/api/posts`);
+	const res = await fetch(`${BASE_URL}/api/posts/getPosts`);
 	if (!res.ok) throw new Error('게시글 로드 실패');
 	const json: ApiResponse<Post[]> = await res.json();
 	return json.data;
