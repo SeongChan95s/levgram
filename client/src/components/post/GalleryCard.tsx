@@ -1,4 +1,4 @@
-import type { Post } from '@/types/photo';
+import type { Post } from '@/types/post';
 import IconGridRow2Col2 from '../common/Icon/IconGridRow2Col2';
 import styles from './GalleryCard.module.scss';
 

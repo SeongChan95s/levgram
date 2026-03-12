@@ -1,42 +1,54 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import PostDetailModal from '../../components/post/PostDetailModal';
-import IconGridRow2Col2 from '../../components/common/Icon/IconGridRow2Col2';
+import GalleryCard from '../../components/post/GalleryCard';
 import { getPosts, searchPosts } from '../../services/post';
-import { useDebounce } from '../../hooks/useDebounce';
-import { POSTS } from '../../mocks/posts';
-import type { Post } from '../../types/photo';
+import { useInfiniteScrollQuery } from '@/hooks/useInfiniteScroll';
+import type { Post } from '../../types/post';
+import { IconButton } from '@/components/common/IconButton';
+import { IconGridCol1Filled, IconGridCol2, IconGridCol3 } from '@/components/common/Icon';
+import { TextField } from '@/components/common/TextField';
+
+const LIMIT = 12;
 
 type ColCount = 1 | 2 | 3;
 
 const colsClassMap: Record<ColCount, string> = {
-	1: 'grid-cols-1',
-	2: 'grid-cols-2',
-	3: 'grid-cols-3'
+	1: 'columns-1',
+	2: 'columns-2',
+	3: 'columns-3'
 };
 
 export default function SearchPage() {
 	const [query, setQuery] = useState('');
+	const [submittedQuery, setSubmittedQuery] = useState('');
 	const [cols, setCols] = useState<ColCount>(3);
 	const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-	const debouncedQuery = useDebounce(query, 300);
-
-	const { data: allPosts = POSTS } = useQuery<Post[]>({
-		queryKey: ['posts'],
-		queryFn: () => getPosts({}),
-		placeholderData: POSTS,
-		retry: false
-	});
-	const { data: searchedPosts = [] } = useQuery<Post[]>({
-		queryKey: ['posts', 'search', debouncedQuery],
-		queryFn: () => searchPosts(debouncedQuery),
-		enabled: debouncedQuery.trim().length > 0,
-		placeholderData: []
+	const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
+		queryKey: ['posts', 'search', submittedQuery],
+		queryFn: ({ pageParam: skip }) =>
+			submittedQuery.trim()
+				? searchPosts({ q: submittedQuery, limit: LIMIT, skip })
+				: getPosts({ limit: LIMIT, skip }),
+		initialPageParam: 0,
+		getNextPageParam: (lastPage, pages) => {
+			if (lastPage.length < LIMIT) return undefined;
+			return pages.length * LIMIT;
+		}
 	});
 
-	const posts = debouncedQuery.trim() ? searchedPosts : allPosts;
+	const infiniteLoaderRef = useInfiniteScrollQuery({
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage
+	});
+
+	function handleSearch(e: React.FormEvent) {
+		e.preventDefault();
+		setSubmittedQuery(query);
+	}
 
 	return (
 		<>
@@ -44,67 +56,44 @@ export default function SearchPage() {
 				<title>Search - Levgram</title>
 			</Helmet>
 			<main className="search-page">
-				{/* sticky 검색바 */}
-				<div className="sticky top-(--nav-bar-height) z-10 bg-white border-b border-gray-100 px-(--inner) py-8 flex items-center gap-8">
-					<input
-						type="search"
+				<form
+					onSubmit={handleSearch}
+					className="sticky top-(--nav-bar-height) z-10 bg-white border-b border-gray-100 px-(--inner) flex items-center gap-12">
+					<TextField
+						className="flex-1"
 						value={query}
 						onChange={e => setQuery(e.target.value)}
 						placeholder="제목, 모델명으로 검색..."
-						className="flex-1 bg-gray-100 rounded-lg px-12 py-6 text-body-3 text-gray-900 outline-none placeholder:text-gray-400"
 					/>
-					{/* 열 수 토글 */}
-					<div className="flex items-center gap-4 shrink-0">
-						{([1, 2, 3] as ColCount[]).map(n => (
-							<button
-								key={n}
-								onClick={() => setCols(n)}
-								className={`w-28 h-28 flex items-center justify-center rounded text-label-3 font-semibold transition-colors ${
-									cols === n ? 'text-gray-900' : 'text-gray-400'
-								}`}
-								aria-label={`${n}열 보기`}>
-								{n}
-							</button>
-						))}
-					</div>
-				</div>
 
-				{/* 갤러리 그리드 */}
-				<section className={`grid gap-0.5 ${colsClassMap[cols]}`}>
-					{posts.map(post => (
-						<article
-							key={post.id}
-							className="cursor-pointer overflow-hidden relative group"
-							onClick={() => setSelectedPost(post)}>
-							<div className="aspect-2/3 overflow-hidden relative">
-								<img
-									src={post.photos[0]}
-									alt={post.title}
-									loading="lazy"
-									className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]"
-								/>
-								{post.photos.length > 1 && (
-									<span
-										className="absolute top-6 right-6 text-white"
-										style={{
-											filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.2))'
-										}}>
-										<IconGridRow2Col2 />
-									</span>
-								)}
-							</div>
-							{cols === 1 && (
-								<p className="text-label-4 px-6 py-4 text-gray-700 flex items-center overflow-hidden">
-									<span className="truncate flex-1 min-w-0">{post.title}</span>
-									<span className="flex-none mx-4 text-gray-300">·</span>
-									<span className="flex-none text-gray-500 max-w-[40%] truncate">
-										{post.model}
-									</span>
-								</p>
-							)}
-						</article>
-					))}
+					<div className="flex items-center gap-6 ">
+						<IconButton
+							className="w-28 h-28 p-2 border border-gray-200 rounded"
+							icon={<IconGridCol1Filled />}
+							onClick={() => setCols(1)}
+						/>
+						<IconButton
+							className="w-28 h-28 p-2 border border-gray-200 rounded"
+							icon={<IconGridCol2 />}
+							onClick={() => setCols(2)}
+						/>
+						<IconButton
+							className="w-28 h-28 p-2 border border-gray-200 rounded"
+							icon={<IconGridCol3 />}
+							onClick={() => setCols(3)}
+						/>
+					</div>
+				</form>
+
+				{/* 갤러리 */}
+				<section className={`${colsClassMap[cols]} gap-2 p-2`}>
+					{data?.pages.map(page =>
+						page.map(post => (
+							<GalleryCard key={post.id} post={post} onClick={setSelectedPost} />
+						))
+					)}
 				</section>
+				<div ref={infiniteLoaderRef} />
 			</main>
 
 			<PostDetailModal post={selectedPost} onClose={() => setSelectedPost(null)} />

@@ -15,12 +15,12 @@
 		right: 0;
 		left: 0;
 		@include layout-width;
-		box-sizing: content-box;
 		height: inherit;
 		padding-top: ios-safe-area(top);
 		margin: 0 auto;
 		color: var(--nav-bar-text-color);
 		background-color: var(--color-surface-01);
+		box-sizing: content-box;
 	}
 
 	.gnb {

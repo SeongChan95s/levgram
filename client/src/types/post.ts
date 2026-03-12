@@ -1,3 +1,5 @@
+export type Tag = 'studio' | 'snap' | 'cosplay' | 'outdoor';
+
 export interface Post {
 	id: number;
 	photos: string[];
@@ -6,5 +8,5 @@ export interface Post {
 	description?: string;
 	date?: string;
 	location?: string;
-	tags?: string[];
+	tags?: Tag[];
 }

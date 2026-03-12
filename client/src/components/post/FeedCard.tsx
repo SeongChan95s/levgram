@@ -1,5 +1,5 @@
 import MySwiperMain from '../common/Swiper/MySwiperMain';
-import type { Post } from '../../types/photo';
+import type { Post } from '../../types/post';
 import styles from './FeedCard.module.scss';
 
 interface FeedCardProps {

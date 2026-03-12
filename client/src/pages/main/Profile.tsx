@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import PostDetailModal from '../../components/post/PostDetailModal';
 import { getPosts } from '../../services/post';
 import { PHOTOGRAPHER } from '../../mocks/photographer';
-import type { Post } from '../../types/photo';
+import type { Post } from '../../types/post';
 import { useInfiniteScrollQuery } from '@/hooks/useInfiniteScroll';
 import GalleryCard from '@/components/post/GalleryCard';
 
@@ -34,7 +34,7 @@ export default function ProfilePage() {
 		fetchNextPage,
 		isFetchingNextPage
 	});
-	const postAmount = posts?.pages.reduce((acc, cur) => acc + cur.length, 0) ?? 0;
+	const postAmount = posts ? posts.pages.reduce((acc, cur) => acc + cur.length, 0) : 0;
 
 	return (
 		<>

@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import { IconClose } from '../common/Icon';
 import { IconButton } from '../common/IconButton';
 import MySwiperMain from '../common/Swiper/MySwiperMain';
-import type { Post } from '../../types/photo';
+import type { Post } from '../../types/post';
 import styles from './PostDetailModal.module.scss';
 
 interface PostDetailModalProps {
@@ -36,11 +36,13 @@ export default function PostDetailModal({ post, onClose }: PostDetailModalProps)
 			<div
 				className={`${styles.overlay} fixed inset-0 z-[90] bg-white flex flex-col overflow-hidden`}
 				ref={overlayRef}>
-
 				{/* 헤더 - 닫기 버튼 왼쪽 (인스타그램 스타일) */}
 				<div
 					className="flex-none flex items-center border-b border-gray-100"
-					style={{ paddingTop: 'max(8px, env(safe-area-inset-top))', paddingBottom: '4px' }}>
+					style={{
+						paddingTop: 'max(8px, env(safe-area-inset-top))',
+						paddingBottom: '4px'
+					}}>
 					<IconButton icon={<IconClose />} size="md" onClick={onClose} />
 				</div>
 
@@ -77,7 +79,9 @@ export default function PostDetailModal({ post, onClose }: PostDetailModalProps)
 					</div>
 					{/* 설명 */}
 					{post?.description && (
-						<p className="text-[14px] leading-relaxed text-gray-700">{post.description}</p>
+						<p className="text-[14px] leading-relaxed text-gray-700">
+							{post.description}
+						</p>
 					)}
 					{/* 날짜 · 장소 */}
 					{(post?.date || post?.location) && (
