@@ -44,7 +44,8 @@ const pathMap: PathMap[] = [
 	{
 		path: '/',
 		props: { logo: true, notify: true },
-		exact: true
+		exact: true,
+		scroll: { type: 'transform' }
 	},
 	{
 		path: '/search',
@@ -59,7 +60,8 @@ const pathMap: PathMap[] = [
 	{
 		path: '/profile',
 		props: { logo: true, notify: true },
-		exact: true
+		exact: true,
+		scroll: { type: 'transform' }
 	}
 ];
 
@@ -117,8 +119,8 @@ export default function NavBar() {
 
 	const className = classNames(
 		styles.navBar,
-		`${scrollFlag}`,
-		`${matchedPath?.scroll?.type}`
+		`${styles[scrollFlag]}`,
+		`${styles?.[matchedPath?.scroll?.type ?? '']}`
 	);
 
 	return (
@@ -137,7 +139,7 @@ export default function NavBar() {
 
 						{navBarProps.logo && (
 							<h1 className={styles.logo} onClick={() => navigate('/')}>
-								<img src="/favicon.png" />
+								Levgram
 							</h1>
 						)}
 

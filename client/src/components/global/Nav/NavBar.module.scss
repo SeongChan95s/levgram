@@ -20,7 +20,7 @@
 		padding-top: ios-safe-area(top);
 		margin: 0 auto;
 		color: var(--nav-bar-text-color);
-		background-color: var(--nav-bar-surface-color);
+		background-color: var(--color-surface-01);
 	}
 
 	.gnb {
@@ -34,31 +34,31 @@
 	}
 
 	.nav-left {
-		flex: 1;
 		display: flex;
 		align-items: center;
 		overflow: hidden;
 		gap: 0.75rem;
+
+		.logo {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			right: 0;
+			transform: translate(-50%, -50%);
+			width: fit-content;
+			font-size: 15px;
+			line-height: 2.6;
+			font-weight: 500;
+			font-family: 'Amarillo';
+			cursor: pointer;
+		}
 
 		.title-box {
 			flex: 1;
 			overflow: hidden;
 
 			h2 {
-				position: absolute;
-				top: 50%;
-				left: 0;
-				right: 0;
-				transform: translateY(-50%);
-				width: fit-content;
-				margin: 0 auto;
-				font-size: 14px;
-				font-weight: 700;
-				line-height: 1;
-				color: var(--color-gray-900);
-				white-space: nowrap;
-				cursor: pointer;
-				text-overflow: unset;
+				@include hidden;
 			}
 
 			&.marquee {
@@ -66,10 +66,6 @@
 					animation: marquee 6s linear infinite;
 				}
 			}
-		}
-
-		&:not(:has(+ .quick-menu)) .title-box {
-			text-align: center;
 		}
 
 		@keyframes marquee {
@@ -87,14 +83,6 @@
 			svg {
 				transform: rotate(180deg);
 			}
-		}
-
-		.logo {
-			font-size: 1.3125rem;
-			line-height: 1.625rem;
-			text-transform: uppercase;
-			font-weight: 500;
-			cursor: pointer;
 		}
 	}
 
@@ -132,7 +120,6 @@
 .transform {
 	.container {
 		transition: transform 0.3s ease, backdrop-filter 0.2s ease;
-
 		.gnb {
 			transition: opacity 0.3s ease;
 			opacity: 1;
@@ -147,7 +134,7 @@
 	&.down,
 	&.bottom {
 		.container {
-			transform: translateY(-2.3125rem);
+			transform: translateY(-100%);
 			.gnb {
 				opacity: 0;
 			}

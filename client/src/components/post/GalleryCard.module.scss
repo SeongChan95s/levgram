@@ -1,0 +1,50 @@
+@layer components {
+	.card {
+		break-inside: avoid;
+		cursor: pointer;
+		overflow: hidden;
+		position: relative;
+		margin-bottom: 2px;
+
+		.image-wrap {
+			overflow: hidden;
+			position: relative;
+
+			.image {
+				width: 100%;
+				height: auto;
+				display: block;
+				transition: transform 300ms;
+			}
+
+			.multi-icon {
+				position: absolute;
+				top: 6px;
+				right: 6px;
+				width: 16px;
+				height: 16px;
+				color: white;
+				filter: $drop-shadow-sm;
+			}
+		}
+
+		&:hover .image {
+			transform: scale(1.04);
+		}
+	}
+
+	.model {
+		position: absolute;
+		left: 6px;
+		bottom: 6px;
+		font-size: 11px;
+		font-weight: 300;
+		line-height: 1;
+		width: 100%;
+		color: var(--color-white);
+		max-width: calc(100% - 12px);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}

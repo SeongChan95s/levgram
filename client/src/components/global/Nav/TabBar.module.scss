@@ -1,38 +1,41 @@
 #tab-bar {
-	height: 3.75rem;
+	height: 60px;
 
 	:global(.app-bar-container) {
-		@include white-glass-normal;
+		background-color: var(--color-surface-01);
 	}
 
 	nav {
 		width: 100%;
 		height: 100%;
-		padding: 0.625rem calc(ios-safe-area(right) + 0.75rem) 0.625rem
-			calc(ios-safe-area(left) + 0.75rem);
+		padding: 10px cos-safe-area(right) 10px ios-safe-area(left);
 
 		.container {
 			display: flex;
+			align-items: center;
 			justify-content: space-between;
-			width: 100%;
+			height: 100%;
 			max-width: 500px;
 			margin: 0 auto;
 		}
 
 		li {
-			width: 53px;
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 	}
 
 	.link {
 		display: flex;
-		flex-direction: column;
+		justify-content: center;
 		align-items: center;
+		width: 24px;
 
 		.icon-wrap {
-			width: 21px;
-			height: 21px;
-			margin: 3px 0 5px;
+			width: 24px;
+			height: 24px;
 		}
 
 		:global(.icon) {

@@ -4,13 +4,16 @@ import { connectDB } from '../db.js';
 
 const router = Router();
 
-router.get('/getPosts', async (_req: Request, res: Response) => {
+router.get('/getPosts', async (req: Request, res: Response) => {
 	try {
+		const { limit = 0, skip = 0 } = req.query;
+		const limitPipe = limit ? [{ $limit: parseInt(limit as string) }] : [];
+		const skipPipe = skip ? [{ $skip: parseInt(skip as string) }] : [];
+
 		const db = (await connectDB()).db(process.env.MONGODB_NAME);
 		const posts = await db
 			.collection<Post>('posts')
-			.find()
-			.sort({ createdAt: -1 })
+			.aggregate([...skipPipe, ...limitPipe])
 			.toArray();
 
 		res.json({ success: true, data: posts });

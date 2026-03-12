@@ -128,6 +128,7 @@
 
 @mixin hidden {
 	position: absolute;
+	display: block !important;
 	overflow: hidden;
 	width: 1px;
 	height: 1px;

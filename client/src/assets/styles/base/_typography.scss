@@ -17,6 +17,12 @@
 	src: url('./../../fonts/PretendardVariable.woff2') format('woff2-variations');
 }
 
+@font-face {
+	font-family: 'Amarillo';
+	font-weight: 100 900;
+	src: url('./../../fonts/Amarillo.otf');
+}
+
 /* ------
 
   basic typography
@@ -41,7 +47,6 @@
 
 	a {
 		color: inherit;
-		// color: var(--black-color-normal);
 	}
 }
 

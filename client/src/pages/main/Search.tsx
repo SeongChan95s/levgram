@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import PostDetailModal from '../../components/portfolio/PostDetailModal';
+import PostDetailModal from '../../components/post/PostDetailModal';
 import IconGridRow2Col2 from '../../components/common/Icon/IconGridRow2Col2';
 import { getPosts, searchPosts } from '../../services/post';
 import { useDebounce } from '../../hooks/useDebounce';
@@ -25,7 +25,7 @@ export default function SearchPage() {
 
 	const { data: allPosts = POSTS } = useQuery<Post[]>({
 		queryKey: ['posts'],
-		queryFn: getPosts,
+		queryFn: () => getPosts({}),
 		placeholderData: POSTS,
 		retry: false
 	});

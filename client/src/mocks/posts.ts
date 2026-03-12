@@ -18,8 +18,8 @@ export const POSTS: Post[] = [
 	{
 		id: 2,
 		photos: [
-			'https://picsum.photos/seed/p02a/800/1200',
-			'https://picsum.photos/seed/p02b/800/1200'
+			'https://picsum.photos/seed/p02a/1200/800',
+			'https://picsum.photos/seed/p02b/1200/800'
 		],
 		title: 'Golden Hour',
 		model: 'Sora L.',
@@ -30,7 +30,7 @@ export const POSTS: Post[] = [
 	},
 	{
 		id: 3,
-		photos: ['https://picsum.photos/seed/p03a/800/1200'],
+		photos: ['https://picsum.photos/seed/p03a/800/1000'],
 		title: 'Silence',
 		model: 'Mina J.',
 		description: '고요함 속에 담긴 이야기.',
@@ -56,8 +56,8 @@ export const POSTS: Post[] = [
 	{
 		id: 5,
 		photos: [
-			'https://picsum.photos/seed/p05a/800/1200',
-			'https://picsum.photos/seed/p05b/800/1200'
+			'https://picsum.photos/seed/p05a/1200/900',
+			'https://picsum.photos/seed/p05b/1200/900'
 		],
 		title: 'Soft Grain',
 		model: 'Rina C.',
@@ -67,7 +67,7 @@ export const POSTS: Post[] = [
 	},
 	{
 		id: 6,
-		photos: ['https://picsum.photos/seed/p06a/800/1200'],
+		photos: ['https://picsum.photos/seed/p06a/800/600'],
 		title: 'Bloom',
 		model: 'Eunbi S.',
 		description: '꽃이 피어나는 계절.',
@@ -90,7 +90,7 @@ export const POSTS: Post[] = [
 	},
 	{
 		id: 8,
-		photos: ['https://picsum.photos/seed/p08a/800/1200'],
+		photos: ['https://picsum.photos/seed/p08a/900/600'],
 		title: 'Shadow Play',
 		model: 'Nara O.',
 		description: '빛과 그림자의 유희.',
@@ -101,8 +101,8 @@ export const POSTS: Post[] = [
 	{
 		id: 9,
 		photos: [
-			'https://picsum.photos/seed/p09a/800/1200',
-			'https://picsum.photos/seed/p09b/800/1200'
+			'https://picsum.photos/seed/p09a/800/1100',
+			'https://picsum.photos/seed/p09b/800/1100'
 		],
 		title: 'Reverie',
 		model: 'Dahye M.',
@@ -112,7 +112,7 @@ export const POSTS: Post[] = [
 	},
 	{
 		id: 10,
-		photos: ['https://picsum.photos/seed/p10a/800/1200'],
+		photos: ['https://picsum.photos/seed/p10a/1200/800'],
 		title: 'Wanderer',
 		model: 'Soyeon B.',
 		date: '2026.03.10',
@@ -135,7 +135,7 @@ export const POSTS: Post[] = [
 	},
 	{
 		id: 12,
-		photos: ['https://picsum.photos/seed/p12a/800/1200'],
+		photos: ['https://picsum.photos/seed/p12a/800/1050'],
 		title: 'Pure',
 		model: 'Chaeyeon W.',
 		description: '순수함, 그 자체.',
