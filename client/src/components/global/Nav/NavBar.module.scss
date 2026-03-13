@@ -119,26 +119,7 @@
 // scroll type
 .transform {
 	.container {
-		transition: transform 0.3s ease, backdrop-filter 0.2s ease;
-		.gnb {
-			transition: opacity 0.3s ease;
-			opacity: 1;
-		}
-	}
-	&.top,
-	&.up {
-		.container {
-			transform: translateY(0px);
-		}
-	}
-	&.down,
-	&.bottom {
-		.container {
-			transform: translateY(-100%);
-			.gnb {
-				opacity: 0;
-			}
-		}
+		transform: translateY(var(--nav-translate-y, 0px));
 	}
 }
 .reverse {

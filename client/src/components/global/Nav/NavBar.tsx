@@ -2,7 +2,6 @@ import { IconArrowStick, IconHomeFilled, IconNotifyOutlined } from '../../common
 import { IconButton } from '../../common/IconButton';
 import { useRef, useEffect, useState, startTransition } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useScrollDirection from '../../../hooks/useScrollDirection';
 import { classNames } from '../../../utils/classNames';
 import styles from './NavBar.module.scss';
 
@@ -96,9 +95,12 @@ function useNavPath() {
 export default function NavBar() {
 	const navigate = useNavigate();
 	const matchedPath = useNavPath();
-	const scrollFlag = useScrollDirection();
+	const navRef = useRef<HTMLElement>(null);
 	const titleRef = useRef<HTMLHeadingElement>(null);
 	const [titleIsOverflowing, setTitleIsOverflowing] = useState(false);
+	const scrollAccumRef = useRef(0);
+	const lastScrollYRef = useRef(0);
+	const rafRef = useRef<number>(0);
 	let navBarProps = { ...initialNavBarProps, ...matchedPath?.props };
 
 	useEffect(() => {
@@ -108,6 +110,44 @@ export default function NavBar() {
 			setTitleIsOverflowing(isOverflow);
 		}
 	}, [navBarProps.title]);
+
+	useEffect(() => {
+		if (matchedPath?.scroll?.type !== 'transform') return;
+
+		scrollAccumRef.current = 0;
+		lastScrollYRef.current = window.scrollY;
+		navRef.current?.style.setProperty('--nav-translate-y', '0px');
+
+		const handleScroll = () => {
+			cancelAnimationFrame(rafRef.current);
+			rafRef.current = requestAnimationFrame(() => {
+				const navHeight = navRef.current?.offsetHeight ?? 60;
+				const currentY = window.scrollY;
+				const delta = currentY - lastScrollYRef.current;
+				lastScrollYRef.current = currentY;
+
+				if (currentY <= 0) {
+					scrollAccumRef.current = 0;
+				} else {
+					scrollAccumRef.current = Math.max(
+						0,
+						Math.min(navHeight, scrollAccumRef.current + delta)
+					);
+				}
+
+				navRef.current?.style.setProperty(
+					'--nav-translate-y',
+					`-${scrollAccumRef.current}px`
+				);
+			});
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		return () => {
+			cancelAnimationFrame(rafRef.current);
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, [matchedPath?.scroll?.type]);
 
 	const handleClickTitle = () => {
 		window.scrollTo({
@@ -119,12 +159,11 @@ export default function NavBar() {
 
 	const className = classNames(
 		styles.navBar,
-		`${styles[scrollFlag]}`,
 		`${styles?.[matchedPath?.scroll?.type ?? '']}`
 	);
 
 	return (
-		<header id="navBar" className={className}>
+		<header id="navBar" ref={navRef} className={className}>
 			<div className={styles.container}>
 				<nav className={styles.gnb}>
 					<div className={styles.navLeft}>

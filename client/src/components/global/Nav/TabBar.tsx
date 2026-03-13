@@ -56,7 +56,7 @@ export default function TabBar() {
 			}
 		},
 		{
-			label: '연락',
+			label: '연락처',
 			href: '/contact',
 			icons: {
 				normal: <IconMessageOutlined size="fill" />,
