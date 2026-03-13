@@ -7,3 +7,7 @@ npx tsc -b --noEmit
 ```
 
 Do NOT use `npx tsc --noEmit` as it will not check all project references and may miss type errors.
+
+# Tailwind css
+
+w-1 은 1px 이다.

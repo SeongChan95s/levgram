@@ -7,13 +7,15 @@ import { PHOTOGRAPHER } from '../../mocks/photographer';
 import type { Post } from '../../types/post';
 import { useInfiniteScrollQuery } from '@/hooks/useInfiniteScroll';
 import GalleryCard from '@/components/post/GalleryCard';
+import Skeleton from '@/components/common/Skeleton/Skeleton';
+import galleryCardStyles from '@/components/post/GalleryCard.module.scss';
 
 export default function ProfilePage() {
 	const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
 	const {
 		data: posts,
-		isPending,
+		isFetching,
 		hasNextPage,
 		isFetchingNextPage,
 		fetchNextPage
@@ -96,7 +98,13 @@ export default function ProfilePage() {
 								<GalleryCard key={post.id} post={post} onClick={setSelectedPost} />
 							));
 						})}
-					{isPending && <div>데이터를 가져오는중...</div>}
+
+					{isFetching && (
+						<>
+							<Skeleton className="h-180 mb-2" variant="rect" />
+							<Skeleton className="h-60 mb-2" variant="rect" />
+						</>
+					)}
 
 					<div ref={infiniteLoaderRef}></div>
 				</section>

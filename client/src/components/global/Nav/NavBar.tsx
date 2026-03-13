@@ -149,7 +149,7 @@ export default function NavBar() {
 		};
 	}, [matchedPath?.scroll?.type]);
 
-	const handleClickTitle = () => {
+	const handleScrollTop = () => {
 		window.scrollTo({
 			top: 0,
 			left: 0,
@@ -177,7 +177,7 @@ export default function NavBar() {
 						)}
 
 						{navBarProps.logo && (
-							<h1 className={styles.logo} onClick={() => navigate('/')}>
+							<h1 className={styles.logo} onClick={handleScrollTop}>
 								Levgram
 							</h1>
 						)}
@@ -189,7 +189,7 @@ export default function NavBar() {
 								className={`${styles.titleBox} ${
 									titleIsOverflowing ? styles.marquee : ''
 								}`}>
-								<h2 ref={titleRef} onClick={handleClickTitle}>
+								<h2 ref={titleRef} onClick={handleScrollTop}>
 									{navBarProps.title}
 								</h2>
 							</div>

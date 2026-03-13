@@ -9,6 +9,7 @@ import type { Post } from '../../types/post';
 import { IconButton } from '@/components/common/IconButton';
 import { IconGridCol1Filled, IconGridCol2, IconGridCol3 } from '@/components/common/Icon';
 import { TextField } from '@/components/common/TextField';
+import { Skeleton } from '@/components/common/Skeleton';
 
 const LIMIT = 12;
 
@@ -26,18 +27,19 @@ export default function SearchPage() {
 	const [cols, setCols] = useState<ColCount>(3);
 	const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
-	const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
-		queryKey: ['posts', 'search', submittedQuery],
-		queryFn: ({ pageParam: skip }) =>
-			submittedQuery.trim()
-				? searchPosts({ q: submittedQuery, limit: LIMIT, skip })
-				: getPosts({ limit: LIMIT, skip }),
-		initialPageParam: 0,
-		getNextPageParam: (lastPage, pages) => {
-			if (lastPage.length < LIMIT) return undefined;
-			return pages.length * LIMIT;
-		}
-	});
+	const { data, isFetching, hasNextPage, isFetchingNextPage, fetchNextPage } =
+		useInfiniteQuery({
+			queryKey: ['posts', 'search', submittedQuery],
+			queryFn: ({ pageParam: skip }) =>
+				submittedQuery.trim()
+					? searchPosts({ q: submittedQuery, limit: LIMIT, skip })
+					: getPosts({ limit: LIMIT, skip }),
+			initialPageParam: 0,
+			getNextPageParam: (lastPage, pages) => {
+				if (lastPage.length < LIMIT) return undefined;
+				return pages.length * LIMIT;
+			}
+		});
 
 	const infiniteLoaderRef = useInfiniteScrollQuery({
 		hasNextPage,
@@ -91,6 +93,13 @@ export default function SearchPage() {
 						page.map(post => (
 							<GalleryCard key={post.id} post={post} onClick={setSelectedPost} />
 						))
+					)}
+
+					{isFetching && (
+						<>
+							<Skeleton className="h-180 mb-2" variant="rect" />
+							<Skeleton className="h-60 mb-2" variant="rect" />
+						</>
 					)}
 				</section>
 				<div ref={infiniteLoaderRef} />
