@@ -2,8 +2,39 @@ import { Router, Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import multer from 'multer';
 import path from 'path';
+import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import type { Post } from '../models/Post.js';
 import { connectDB } from '../db.js';
+
+const s3 = new S3Client({
+	region: process.env.AWS_REGION || 'ap-northeast-2',
+	credentials: {
+		accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
+	}
+});
+
+const extractS3Key = (url: string, bucketName: string): string | null => {
+	try {
+		const parsed = new URL(url);
+		const hostname = parsed.hostname;
+		if (
+			hostname === `${bucketName}.s3.amazonaws.com` ||
+			hostname.startsWith(`${bucketName}.s3.`)
+		) {
+			return decodeURIComponent(parsed.pathname.slice(1));
+		}
+		if (hostname.startsWith('s3.') || hostname === 's3.amazonaws.com') {
+			const parts = parsed.pathname.slice(1).split('/');
+			if (parts[0] === bucketName) {
+				return decodeURIComponent(parts.slice(1).join('/'));
+			}
+		}
+		return null;
+	} catch {
+		return null;
+	}
+};
 
 const router = Router();
 
@@ -130,6 +161,40 @@ router.put('/:id', upload.array('photos'), async (req: Request, res: Response) =
 		}
 
 		res.json({ success: true, data: toPostResponse(updated) });
+	} catch (_err) {
+		res.status(500).json({ success: false, message: '서버 오류' });
+	}
+});
+
+router.delete('/:id', async (req: Request, res: Response) => {
+	const token = req.headers.authorization?.replace('Bearer ', '');
+	if (!token || token !== process.env.ADMIN_TOKEN) {
+		res.status(401).json({ success: false, message: '인증 실패' });
+		return;
+	}
+
+	try {
+		const id = String(req.params.id);
+		const db = (await connectDB()).db(process.env.MONGODB_NAME);
+
+		const post = await db.collection<Post>('posts').findOne({ _id: new ObjectId(id) });
+		if (!post) {
+			res.status(404).json({ success: false, message: '게시물을 찾을 수 없습니다.' });
+			return;
+		}
+
+		const bucketName = process.env.S3_BUCKET_NAME!;
+		await Promise.allSettled(
+			post.photos.map(url => {
+				const key = extractS3Key(url, bucketName);
+				if (!key) return Promise.resolve();
+				return s3.send(new DeleteObjectCommand({ Bucket: bucketName, Key: key }));
+			})
+		);
+
+		await db.collection<Post>('posts').deleteOne({ _id: new ObjectId(id) });
+
+		res.json({ success: true, message: '삭제되었습니다.' });
 	} catch (_err) {
 		res.status(500).json({ success: false, message: '서버 오류' });
 	}

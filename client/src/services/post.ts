@@ -42,6 +42,15 @@ export async function getPost(id: string): Promise<Post> {
 	return result.data;
 }
 
+export async function deletePost(id: string, token: string): Promise<void> {
+	const res = await fetch(`${BASE_URL}/api/posts/${id}`, {
+		method: 'DELETE',
+		headers: { Authorization: `Bearer ${token}` }
+	});
+	const result: FetchResponse = await res.json();
+	if (!res.ok || !result.success) throw new Error('삭제 실패');
+}
+
 export async function updatePost(
 	id: string,
 	formData: FormData,

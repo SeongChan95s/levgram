@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Modal } from '../common/Modal';
-import { IconClose, IconEdit } from '../common/Icon';
+import { IconClose, IconEdit, IconTrash } from '../common/Icon';
 import { IconButton } from '../common/IconButton';
 import { useAdminStore } from '../../store/adminStore';
+import { deletePost } from '../../services/post';
 import type { Post } from '../../types/post';
 import styles from './PostDetailModal.module.scss';
 
@@ -14,28 +16,70 @@ interface PostDetailModalProps {
 
 export default function PostDetailModal({ post, onClose }: PostDetailModalProps) {
 	const [displayPost, setDisplayPost] = useState<Post | null>(null);
+	const [isConfirming, setIsConfirming] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 	const navigate = useNavigate();
-	const isAdmin = useAdminStore(s => s.isAdmin);
+	const queryClient = useQueryClient();
+	const { isAdmin, token } = useAdminStore();
 
 	useEffect(() => {
 		if (post !== null) {
 			setDisplayPost(post);
+		} else {
+			setIsConfirming(false);
 		}
 	}, [post]);
+
+	const handleDelete = async () => {
+		if (!displayPost || !token) return;
+		setIsDeleting(true);
+		try {
+			await deletePost(displayPost.id, token);
+			queryClient.invalidateQueries({ queryKey: ['posts'] });
+			onClose();
+		} finally {
+			setIsDeleting(false);
+			setIsConfirming(false);
+		}
+	};
 
 	return (
 		<Modal visible={post !== null} className={styles.postDetailModal}>
 			<div className={styles.header}>
 				{isAdmin && displayPost && (
-					<IconButton
-						className={styles.editButton}
-						icon={<IconEdit />}
-						size="md"
-						onClick={() => {
-							onClose();
-							navigate(`/detail/${displayPost.id}`);
-						}}
-					/>
+					<div className={styles.adminActions}>
+						<IconButton
+							icon={<IconEdit />}
+							size="md"
+							onClick={() => {
+								onClose();
+								navigate(`/detail/${displayPost.id}`);
+							}}
+						/>
+						{isConfirming ? (
+							<div className={styles.deleteConfirm}>
+								<span className={styles.confirmText}>삭제할까요?</span>
+								<button
+									className={styles.confirmBtn}
+									onClick={handleDelete}
+									disabled={isDeleting}>
+									삭제
+								</button>
+								<button
+									className={styles.cancelBtn}
+									onClick={() => setIsConfirming(false)}>
+									취소
+								</button>
+							</div>
+						) : (
+							<IconButton
+								icon={<IconTrash />}
+								size="md"
+								className={styles.deleteButton}
+								onClick={() => setIsConfirming(true)}
+							/>
+						)}
+					</div>
 				)}
 				<IconButton
 					className={styles.closeButton}

@@ -11,8 +11,51 @@
 		align-items: center;
 		padding: calc(ios-safe-area(top) + 14px) var(--inner) 14px;
 		background-color: var(--color-surface-01);
-		.edit-button {
+
+		.admin-actions {
+			display: flex;
+			align-items: center;
+			gap: 4px;
 			margin-right: auto;
+		}
+
+		.delete-button {
+			color: var(--color-red-500);
+		}
+
+		.delete-confirm {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+
+			.confirm-text {
+				font-size: 13px;
+				color: var(--color-gray-700);
+				white-space: nowrap;
+			}
+
+			.confirm-btn {
+				font-size: 13px;
+				font-weight: 600;
+				color: var(--color-red-500);
+				background: none;
+				border: none;
+				padding: 0;
+				cursor: pointer;
+
+				&:disabled {
+					opacity: 0.5;
+				}
+			}
+
+			.cancel-btn {
+				font-size: 13px;
+				color: var(--color-gray-500);
+				background: none;
+				border: none;
+				padding: 0;
+				cursor: pointer;
+			}
 		}
 
 		.close-button {

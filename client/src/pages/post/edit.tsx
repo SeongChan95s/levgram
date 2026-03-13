@@ -12,7 +12,6 @@ import Textarea from '../../components/common/Textarea/Textarea';
 import ImagePicker from '../../components/common/ImagePicker/ImagePicker';
 import Button from '../../components/common/Button/Button';
 import { Checkbox } from '../../components/common/Checkbox';
-import styles from './detail.module.scss';
 
 const TAG_OPTIONS: Tag[] = ['studio', 'snap', 'cosplay', 'outdoor'];
 
@@ -88,9 +87,7 @@ export default function PostEditPage() {
 		if (data.location) formData.append('location', data.location);
 		formData.append('tags', JSON.stringify(data.tags));
 
-		const existingPhotos = data.photos
-			.filter(p => p.state === 'initial')
-			.map(p => p.key);
+		const existingPhotos = data.photos.filter(p => p.state === 'initial').map(p => p.key);
 		formData.append('existingPhotos', JSON.stringify(existingPhotos));
 
 		data.photos
@@ -120,13 +117,8 @@ export default function PostEditPage() {
 						}}
 						render={({ field }) => (
 							<div>
-								<ImagePicker
-									value={field.value}
-									onMetadataChange={field.onChange}
-								/>
-								{errors.photos && (
-									<p className={styles.error}>{errors.photos.message}</p>
-								)}
+								<ImagePicker value={field.value} onMetadataChange={field.onChange} />
+								{errors.photos && <p>{errors.photos.message}</p>}
 							</div>
 						)}
 					/>
