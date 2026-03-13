@@ -34,3 +34,25 @@ export async function searchPosts({
 	if (!res.ok || !result.success) throw new Error('검색 실패');
 	return result.data;
 }
+
+export async function getPost(id: string): Promise<Post> {
+	const res = await fetch(`${BASE_URL}/api/posts/${id}`);
+	const result: FetchResponse<Post> = await res.json();
+	if (!res.ok || !result.success) throw new Error('게시글 불러오기 실패');
+	return result.data;
+}
+
+export async function updatePost(
+	id: string,
+	formData: FormData,
+	token: string
+): Promise<Post> {
+	const res = await fetch(`${BASE_URL}/api/posts/${id}`, {
+		method: 'PUT',
+		headers: { Authorization: `Bearer ${token}` },
+		body: formData
+	});
+	const result: FetchResponse<Post> = await res.json();
+	if (!res.ok || !result.success) throw new Error('수정 실패');
+	return result.data;
+}

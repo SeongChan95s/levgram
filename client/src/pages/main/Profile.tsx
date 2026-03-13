@@ -8,7 +8,6 @@ import type { Post } from '../../types/post';
 import { useInfiniteScrollQuery } from '@/hooks/useInfiniteScroll';
 import GalleryCard from '@/components/post/GalleryCard';
 import Skeleton from '@/components/common/Skeleton/Skeleton';
-import galleryCardStyles from '@/components/post/GalleryCard.module.scss';
 
 export default function ProfilePage() {
 	const [selectedPost, setSelectedPost] = useState<Post | null>(null);

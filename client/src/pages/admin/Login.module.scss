@@ -1,0 +1,24 @@
+@layer components {
+	.page {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 100dvh;
+		padding: 24px;
+	}
+
+	.form {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		width: 100%;
+		max-width: 320px;
+	}
+
+	.title {
+		font-size: 20px;
+		font-weight: 700;
+		text-align: center;
+		margin-bottom: 8px;
+	}
+}

@@ -38,3 +38,4 @@ export { default as IconTalkFilled } from './IconTalkFilled';
 export { default as IconTalkOutlined } from './IconTalkOutlined';
 export { default as IconTriangleFilled } from './IconTriangleFilled';
 export { default as IconTwitter } from './IconTwitter';
+export { default as IconEdit } from './IconEdit';

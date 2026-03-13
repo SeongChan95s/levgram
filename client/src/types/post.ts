@@ -1,7 +1,7 @@
 export type Tag = 'studio' | 'snap' | 'cosplay' | 'outdoor';
 
 export interface Post {
-	id: number;
+	id: string;
 	photos: string[];
 	title: string;
 	model: string;

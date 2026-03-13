@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Modal } from '../common/Modal';
-import { IconClose } from '../common/Icon';
+import { IconClose, IconEdit } from '../common/Icon';
 import { IconButton } from '../common/IconButton';
-import MySwiperMain from '../common/Swiper/MySwiperMain';
+import { useAdminStore } from '../../store/adminStore';
 import type { Post } from '../../types/post';
 import styles from './PostDetailModal.module.scss';
 
@@ -13,6 +14,8 @@ interface PostDetailModalProps {
 
 export default function PostDetailModal({ post, onClose }: PostDetailModalProps) {
 	const [displayPost, setDisplayPost] = useState<Post | null>(null);
+	const navigate = useNavigate();
+	const isAdmin = useAdminStore(s => s.isAdmin);
 
 	useEffect(() => {
 		if (post !== null) {
@@ -23,6 +26,17 @@ export default function PostDetailModal({ post, onClose }: PostDetailModalProps)
 	return (
 		<Modal visible={post !== null} className={styles.postDetailModal}>
 			<div className={styles.header}>
+				{isAdmin && displayPost && (
+					<IconButton
+						className={styles.editButton}
+						icon={<IconEdit />}
+						size="md"
+						onClick={() => {
+							onClose();
+							navigate(`/detail/${displayPost.id}`);
+						}}
+					/>
+				)}
 				<IconButton
 					className={styles.closeButton}
 					icon={<IconClose />}

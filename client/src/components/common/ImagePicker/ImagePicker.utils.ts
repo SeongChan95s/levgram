@@ -1,16 +1,14 @@
 import type { ImagePickerMetadata } from './ImagePicker';
 import { getFileFormat } from '../../../utils/getFileFormat';
+import { resizeImage } from '../../../utils/resizeImage';
 
-/**
- * urls 를 받아서 state 초기화
- */
 export const convertImagePickerItems = (
 	urls?: string[]
 ): ImagePickerMetadata[] | undefined => {
-	return urls?.map(key => ({
-		key,
+	return urls?.map(url => ({
+		key: url,
 		file: null,
-		blob: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${key}`,
+		blob: url,
 		state: 'initial'
 	}));
 };
@@ -37,7 +35,6 @@ export const parseImagePickerFormData = (
 	try {
 		const imageData: ImagePickerServerData[] = JSON.parse(dataStr);
 
-		// upload 상태인 이미지와 파일 매칭
 		let fileIndex = 0;
 		const result: ImagePickerParsedData[] = imageData.map(data => {
 			if (data.state === 'upload') {
@@ -45,17 +42,9 @@ export const parseImagePickerFormData = (
 				if (!file) {
 					throw new Error(`upload 상태의 이미지에 대응하는 파일이 없습니다: ${data.key}`);
 				}
-				return {
-					key: data.key,
-					state: 'upload',
-					file
-				};
+				return { key: data.key, state: 'upload', file };
 			}
-			return {
-				key: data.key,
-				state: data.state as 'initial' | 'delete',
-				file: null
-			};
+			return { key: data.key, state: data.state as 'initial' | 'delete', file: null };
 		});
 
 		return result;
@@ -64,42 +53,42 @@ export const parseImagePickerFormData = (
 	}
 };
 
-/**
- * FileList를 ImagePickerItem[]으로 변환 (유효성 검사 및 중복 제거 포함)
- */
-export const processFiles = (
+export const processFiles = async (
 	files: FileList,
 	existingImages: ImagePickerMetadata[],
 	acceptExts: string[],
 	maxSizeMB: number
-): ImagePickerMetadata[] => {
+): Promise<ImagePickerMetadata[]> => {
 	const arr = Array.from(files);
 
-	// 유효성 검사
 	const validFiles = arr.filter(file => {
 		const ext = getFileFormat(file.name).toLowerCase();
-		const sizeMB = file.size / 1024 / 1024;
-		return acceptExts.includes(ext) && sizeMB <= maxSizeMB;
+		return acceptExts.includes(ext);
 	});
 
-	// 중복 체크
 	const nonDuplicateFiles = validFiles.filter(file => {
 		const fileIdentifier = `${file.name}_${file.size}`;
 		return !existingImages.some(img => {
 			if (img.state === 'delete') return false;
 			if (img.file) {
-				const existingIdentifier = `${img.file.name}_${img.file.size}`;
-				return existingIdentifier === fileIdentifier;
+				return `${img.file.name}_${img.file.size}` === fileIdentifier;
 			}
 			return false;
 		});
 	});
 
-	// ImagePickerItem[]으로 변환
-	return nonDuplicateFiles.map(file => ({
-		key: file.name,
-		file,
-		blob: window.URL.createObjectURL(file),
-		state: 'upload'
-	}));
+	const results: ImagePickerMetadata[] = [];
+	for (const file of nonDuplicateFiles) {
+		const resized = await resizeImage(file, 1800);
+		const sizeMB = resized.size / 1024 / 1024;
+		if (sizeMB > maxSizeMB) continue;
+		results.push({
+			key: file.name,
+			file: resized,
+			blob: window.URL.createObjectURL(resized),
+			state: 'upload'
+		});
+	}
+
+	return results;
 };

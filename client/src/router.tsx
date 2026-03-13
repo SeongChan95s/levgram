@@ -11,6 +11,7 @@ import PopupGuidePage from './pages/guide/common/PopupGuidePage';
 import GlobalPopupGuidePage from './pages/guide/global/GlobalPopupGuidePage';
 import SheetGuidePage from './pages/guide/common/SheetGuidePage';
 import PostEditPage from './pages/post/detail';
+import AdminLoginPage from './pages/admin/Login';
 import SubLayout from './layouts/Sub';
 import HomePage from './pages/main/Home';
 
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
 				element: <GlobalPopupGuidePage />
 			}
 		]
+	},
+	{
+		path: '/admin/login',
+		element: <AdminLoginPage />
 	},
 	{
 		path: '*',

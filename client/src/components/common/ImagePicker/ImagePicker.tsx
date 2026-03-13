@@ -182,11 +182,11 @@ const ImagePicker = forwardRef<HTMLInputElement, ImagePickerProps>(function Imag
 		fileInputRef.current.files = dataTransfer.files;
 	};
 
-	const handleAddFiles = (files: FileList) => {
+	const handleAddFiles = async (files: FileList) => {
 		const currentCount = value.filter(img => img.state !== 'delete').length;
 		if (maxCount && currentCount + files.length > maxCount) return;
 
-		const addedImages = processFiles(files, value, acceptExts, maxSizeMB);
+		const addedImages = await processFiles(files, value, acceptExts, maxSizeMB);
 
 		const newImages = [...value, ...addedImages];
 		setValue?.(newImages);

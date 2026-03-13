@@ -11,6 +11,10 @@
 		align-items: center;
 		padding: calc(ios-safe-area(top) + 14px) var(--inner) 14px;
 		background-color: var(--color-surface-01);
+		.edit-button {
+			margin-right: auto;
+		}
+
 		.close-button {
 			margin-left: auto;
 		}
